@@ -13,4 +13,5 @@ export const movies = [
     poster: "/images/batman.jpg",
     trailer: "https://www.youtube.com/embed/mqqft2x_Aa4",
   },
+  
 ];
