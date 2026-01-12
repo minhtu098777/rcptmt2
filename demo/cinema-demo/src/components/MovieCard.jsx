@@ -1,16 +1,27 @@
 import { Link } from "react-router-dom";
 
 function MovieCard({ movie }) {
+  const title = movie?.title || movie?.name || "Movie poster";
+
   return (
-    <div className="col-md-3">
-      <div className="card">
-        <img src={movie.poster} className="card-img-top" />
-        <div className="card-body">
-          <h5>{movie.title}</h5>
-          <Link to={`/movie/${movie.id}`} className="btn btn-primary w-100">
+    <div className="card h-100 shadow-sm">
+      <img
+        src={movie?.poster || "/placeholder.jpg"}
+        className="card-img-top"
+        alt={title}
+      />
+
+      <div className="card-body d-flex flex-column">
+        <h5 className="card-title">{title}</h5>
+        <p className="card-text">
+          Thể loại: {movie?.genre || "Đang cập nhật"}
+        </p>
+
+        {movie?.id && (
+          <Link to={`/movie/${movie.id}`} className="btn btn-primary mt-auto">
             Xem chi tiết
           </Link>
-        </div>
+        )}
       </div>
     </div>
   );

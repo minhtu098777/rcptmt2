@@ -1,25 +1,59 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { movies } from "../data/movies";
-import { showtimes } from "../data/showtimes";
+import { useContext, useEffect } from "react";
+import { BookingContext } from "../context/BookingContext";
 
 function MovieDetail() {
   const { id } = useParams();
-  const movie = movies.find(m => m.id == id);
+  const nav = useNavigate();
+  const { setMovie, setShowtime } = useContext(BookingContext);
+
+  const movie = movies.find((m) => String(m.id) === String(id));
+
+  useEffect(() => {
+    if (!movie) {
+      nav("/");
+    } else {
+      setMovie(movie);
+    }
+  }, [movie, nav, setMovie]);
+
+  if (!movie) {
+    return (
+      <div className="container mt-5 text-center">
+        <h4>❌ Phim không tồn tại</h4>
+        <p>Đang quay về trang chủ...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="container mt-4">
       <h2>{movie.title}</h2>
-      <p>{movie.description}</p>
 
-      <h4>Suất chiếu</h4>
-      {showtimes.map(st => (
-        <Link
-          key={st.id}
-          to={`/seats/${st.id}`}
+      {movie.trailer && (
+        <iframe
+          width="100%"
+          height="400"
+          src={movie.trailer}
+          title={movie.title}
+          allowFullScreen
+        />
+      )}
+
+      <h5 className="mt-4">Chọn suất chiếu</h5>
+
+      {movie.showtimes?.map((time) => (
+        <button
+          key={time}
           className="btn btn-outline-primary me-2"
+          onClick={() => {
+            setShowtime(time);
+            nav("/seat");
+          }}
         >
-          {st.time}
-        </Link>
+          {time}
+        </button>
       ))}
     </div>
   );

@@ -1,10 +1,16 @@
 export const movies = [
   {
     id: 1,
-    title: "Avatar 2",
-    genre: "Sci-Fi",
-    duration: 190,
-    poster: "https://via.placeholder.com/300x450",
-    description: "Epic sci-fi movie"
-  }
+    title: "Avengers",
+    genre: "Action",
+    poster: "/images/avengers.jpg",
+    trailer: "https://www.youtube.com/embed/eOrNdBpGMv8",
+  },
+  {
+    id: 2,
+    title: "Batman",
+    genre: "Drama",
+    poster: "/images/batman.jpg",
+    trailer: "https://www.youtube.com/embed/mqqft2x_Aa4",
+  },
 ];
