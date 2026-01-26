@@ -1,16 +1,8 @@
 import { createContext, useState } from "react";
 
-export const BookingContext = createContext({
-  movie: null,
-  setMovie: () => {},
-  showtime: null,
-  setShowtime: () => {},
-  seats: [],
-  setSeats: () => {},
-  resetBooking: () => {},
-});
+export const BookingContext = createContext();
 
-export const BookingProvider = ({ children }) => {
+export function BookingProvider({ children }) {
   const [movie, setMovie] = useState(null);
   const [showtime, setShowtime] = useState(null);
   const [seats, setSeats] = useState([]);
@@ -36,4 +28,4 @@ export const BookingProvider = ({ children }) => {
       {children}
     </BookingContext.Provider>
   );
-};
+}

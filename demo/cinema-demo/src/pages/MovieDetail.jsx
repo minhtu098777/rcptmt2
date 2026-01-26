@@ -3,47 +3,35 @@ import { movies } from "../data/movies";
 import { useContext, useEffect } from "react";
 import { BookingContext } from "../context/BookingContext";
 
-function MovieDetail() {
+export default function MovieDetail() {
   const { id } = useParams();
   const nav = useNavigate();
   const { setMovie, setShowtime } = useContext(BookingContext);
 
-  const movie = movies.find((m) => String(m.id) === String(id));
+  const movie = movies.find(m => String(m.id) === id);
 
   useEffect(() => {
-    if (!movie) {
-      nav("/");
-    } else {
-      setMovie(movie);
-    }
-  }, [movie, nav, setMovie]);
+    if (!movie) nav("/");
+    else setMovie(movie);
+  }, []);
 
-  if (!movie) {
-    return (
-      <div className="container mt-5 text-center">
-        <h4>❌ Phim không tồn tại</h4>
-        <p>Đang quay về trang chủ...</p>
-      </div>
-    );
-  }
+  if (!movie) return null;
 
   return (
     <div className="container mt-4">
       <h2>{movie.title}</h2>
 
-      {movie.trailer && (
-        <iframe
-          width="100%"
-          height="400"
-          src={movie.trailer}
-          title={movie.title}
-          allowFullScreen
-        />
-      )}
+      <iframe
+        width="100%"
+        height="400"
+        src={movie.trailer}
+        title={movie.title}
+        allowFullScreen
+      />
 
-      <h5 className="mt-4">Chọn suất chiếu</h5>
+      <h5 className="mt-3">Select Showtime</h5>
 
-      {movie.showtimes?.map((time) => (
+      {movie.showtimes.map(time => (
         <button
           key={time}
           className="btn btn-outline-primary me-2"
@@ -58,5 +46,3 @@ function MovieDetail() {
     </div>
   );
 }
-
-export default MovieDetail;

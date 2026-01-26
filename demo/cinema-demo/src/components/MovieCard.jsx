@@ -14,12 +14,12 @@ function MovieCard({ movie }) {
       <div className="card-body d-flex flex-column">
         <h5 className="card-title">{title}</h5>
         <p className="card-text">
-          Thể loại: {movie?.genre || "Đang cập nhật"}
+          Category: {movie?.genre || "Đang cập nhật"}
         </p>
 
         {movie?.id && (
           <Link to={`/movie/${movie.id}`} className="btn btn-primary mt-auto">
-            Xem chi tiết
+            View details
           </Link>
         )}
       </div>

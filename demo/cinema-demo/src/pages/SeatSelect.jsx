@@ -3,40 +3,49 @@ import { BookingContext } from "../context/BookingContext";
 import { useNavigate } from "react-router-dom";
 
 export default function SeatSelect() {
-  const { seats = [], setSeats } = useContext(BookingContext);
+  const { seats, setSeats, movie, soldSeats = [] } = useContext(BookingContext);
   const nav = useNavigate();
 
-  const toggleSeat = (seat) => {
-    if (!Array.isArray(seats)) return;
-
+  const toggleSeat = seat => {
+    // không cho chọn ghế đã bán
+    if (soldSeats.includes(seat)) return;
     setSeats(
       seats.includes(seat)
-        ? seats.filter((s) => s !== seat)
+        ? seats.filter(s => s !== seat)
         : [...seats, seat]
     );
   };
 
-  const canCheckout = Array.isArray(seats) && seats.length > 0;
-
   return (
-    <div className="container py-5 text-center">
-      <h3 className="mb-3">🪑 Select Seats</h3>
+    <div className="container my-5 text-center">
+      <h3 className="mb-3">{movie?.title || "Select Seat"} 🎬</h3>
+      <p>Showtime: {movie?.showtime || "N/A"}</p>
 
-      {/* Seat map */}
-      <div className="d-flex flex-wrap justify-content-center my-4">
+      {/* Legend */}
+      <div className="mb-3">
+        <span className="badge bg-secondary me-2">Available</span>
+        <span className="badge bg-success me-2">Selected</span>
+        <span className="badge bg-danger">Sold</span>
+      </div>
+
+      {/* Seat Grid */}
+      <div className="d-flex flex-wrap justify-content-center mb-4">
         {[...Array(30)].map((_, i) => {
           const seat = i + 1;
-          const selected = seats.includes(seat);
+          const isSelected = seats.includes(seat);
+          const isSold = soldSeats.includes(seat);
+
+          let btnClass = "btn m-1";
+          if (isSold) btnClass += " btn-danger disabled";
+          else if (isSelected) btnClass += " btn-success";
+          else btnClass += " btn-outline-secondary";
 
           return (
             <button
               key={seat}
-              type="button"
-              className={`btn m-1 ${
-                selected ? "btn-success" : "btn-outline-secondary"
-              }`}
+              className={btnClass}
               onClick={() => toggleSeat(seat)}
-              aria-pressed={selected}
+              style={{ width: "50px", height: "50px", borderRadius: "8px" }}
             >
               {seat}
             </button>
@@ -44,19 +53,13 @@ export default function SeatSelect() {
         })}
       </div>
 
-      {/* Selected seats info */}
-      <p>
-        <strong>Selected seats:</strong>{" "}
-        {canCheckout ? seats.join(", ") : "None"}
-      </p>
-
-      {/* Checkout button */}
+      {/* Continue button */}
       <button
-        className="btn btn-primary mt-3"
-        disabled={!canCheckout}
+        className="btn btn-primary btn-lg"
+        disabled={seats.length === 0}
         onClick={() => nav("/checkout")}
       >
-        Proceed to Checkout
+        Continue
       </button>
     </div>
   );

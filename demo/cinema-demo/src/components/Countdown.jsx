@@ -20,7 +20,7 @@ function Countdown({ onExpire }) {
 
   return (
     <div className="alert alert-warning text-center">
-      Giữ ghế: {Math.floor(time / 60)}:{time % 60}
+      Save the seat: {Math.floor(time / 60)}:{time % 60}
     </div>
   );
 }
